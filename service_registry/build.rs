@@ -3,8 +3,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .build_server(true)
         .out_dir("src/generated")
         .compile_protos(
-            &["../shared_proto/service_registry.proto"],
-            &["../shared_proto"],
+            &["../proto/service_registry.proto"],
+            &["../proto"],
         )?;
     Ok(())
 }
