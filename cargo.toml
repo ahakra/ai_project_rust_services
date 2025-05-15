@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "service_registry",
+    "react_backend",
+    
+]

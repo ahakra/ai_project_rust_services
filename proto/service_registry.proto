@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package service_registry;
+
+service ServiceRegistry {
+  rpc GetServiceInfo (ServiceInfoRequest) returns (ServiceInfoResponse);
+  rpc RegisterService (ServiceRegisterRequest) returns (ServiceInfoResponse);
+  rpc UpdateService (ServiceUpdateRequest) returns (ServiceInfoResponse);
+  rpc DeleteService (ServiceDeleteRequest) returns (ServiceDeleteResponse);
+
+  rpc GetServicesByCategory (ServicesByCategoryRequest) returns (ServicesByCategoryResponse);
+
+}
+
+message ServiceInfoRequest {
+  string service_id = 1;
+  string category = 2;       // Optional: Allow filtering by category
+  string subcategory = 3;    // Optional: Allow filtering by subcategory
+}
+
+// Register a new service
+message ServiceRegisterRequest {
+  string service_id = 1;
+  string service_name = 2;
+  string category = 3;
+  string subcategory = 4;
+  string type = 5;
+  string task = 6;
+  string version = 7;
+  string status = 8;
+  string health_endpoint = 9;
+  map<string, string> metadata = 10;
+}
+
+// Update existing service
+message ServiceUpdateRequest {
+  string service_id = 1;
+  string category = 2; 
+  string subcategory = 3; 
+  string status = 4;
+  string version = 5;
+  string health_endpoint = 6;
+  map<string, string> metadata = 7;
+}
+
+// Delete service
+message ServiceDeleteRequest {
+    string service_id = 1;
+    string category = 2; // Add category
+    string subcategory = 3; // Optionally add subcategory
+}
+
+
+message ServiceDeleteResponse {
+  string service_id = 1;
+  string message = 2;
+}
+
+// Common response with full service info
+message ServiceInfoResponse {
+  string service_id = 1;
+  string service_name = 2;
+  string category = 3;
+  string subcategory = 4;
+  string type = 5;
+  string task = 6;
+  string version = 7;
+  string status = 8;
+  string health_endpoint = 9;
+  map<string, string> metadata = 10;
+}
+
+
+message ServicesByCategoryRequest {
+  string category = 1;
+  string subcategory = 2; // optional filter
+}
+message ServicesByCategoryResponse {
+  repeated ServiceInfoResponse services = 1;
+}
+
+

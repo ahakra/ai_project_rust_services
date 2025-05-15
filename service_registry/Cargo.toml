@@ -1,0 +1,16 @@
+[package]
+name = "service-registry"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name="service-registry"
+path="src/server.rs"
+
+[dependencies]
+tonic = "0.13.1"
+prost = "0.13.5"
+tokio ={version = "1.45.0" ,features = ["macros","rt-multi-thread"]}
+
+[build-dependencies]
+tonic-build = "0.13.1"
