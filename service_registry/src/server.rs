@@ -53,6 +53,13 @@ impl ServiceRegistry for Registry {
         request: Request<ServiceRegisterRequest>,
     ) -> Result<Response<ServiceInfoResponse>, Status> {
         let req = request.into_inner();
+        log::info!(
+                "Service registered: id='{}', category='{}', subcategory='{}', type='{}'",
+                req.service_id,
+                req.category,
+                req.subcategory,
+                req.r#type
+            );
 
         let mut store = self.store.write().await;
 
@@ -180,12 +187,18 @@ impl ServiceRegistry for Registry {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    env_logger::Builder::from_default_env()
+        .filter_level(log::LevelFilter::Info)
+        .init();
+
+
     let add: SocketAddr = "[::1]:50051".parse()?;
     let registry = Registry {
         store: Arc::new(RwLock::new(HashMap::new())),
     };
     let service = ServiceRegistryServer::new(registry);
-    println!("Starting server at {}", add);
+    log::info!("Starting server at {}", add);
+
     Server::builder().add_service(service).serve(add).await?;
 
     Ok(())
