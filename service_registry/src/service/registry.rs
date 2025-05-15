@@ -36,10 +36,10 @@ impl ServiceRegistry for Registry {
         let req = request.into_inner();
         log::info!(
                 "Service registered: id='{}', category='{}', subcategory='{}', type='{}'",
-                req.service_id,
-                req.category,
-                req.subcategory,
-                req.r#type
+                req.service_id.clone(),
+                req.category.clone(),
+                req.subcategory.clone(),
+                req.r#type.clone()
             );
 
         let mut store = self.store.write().await;
