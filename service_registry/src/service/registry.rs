@@ -1,7 +1,11 @@
-use tonic::{Request, Response, Status};
 use crate::generated::service_registry::service_registry_server::ServiceRegistry;
-use crate::generated::service_registry::{ServiceDeleteRequest, ServiceDeleteResponse, ServiceInfoRequest, ServiceInfoResponse, ServiceRegisterRequest, ServiceUpdateRequest, ServicesByCategoryRequest, ServicesByCategoryResponse};
+use crate::generated::service_registry::{
+    ServiceDeleteRequest, ServiceDeleteResponse, ServiceInfoRequest, ServiceInfoResponse,
+    ServiceRegisterRequest, ServiceUpdateRequest, ServicesByCategoryRequest,
+    ServicesByCategoryResponse,
+};
 use crate::model::store::Registry;
+use tonic::{Request, Response, Status};
 
 #[tonic::async_trait]
 impl ServiceRegistry for Registry {
@@ -35,12 +39,12 @@ impl ServiceRegistry for Registry {
     ) -> Result<Response<ServiceInfoResponse>, Status> {
         let req = request.into_inner();
         log::info!(
-                "Service registered: id='{}', category='{}', subcategory='{}', type='{}'",
-                req.service_id.clone(),
-                req.category.clone(),
-                req.subcategory.clone(),
-                req.r#type.clone()
-            );
+            "Service registered: id='{}', category='{}', subcategory='{}', type='{}'",
+            req.service_id.clone(),
+            req.category.clone(),
+            req.subcategory.clone(),
+            req.r#type.clone()
+        );
 
         let mut store = self.store.write().await;
 
@@ -77,6 +81,13 @@ impl ServiceRegistry for Registry {
         request: Request<ServiceUpdateRequest>,
     ) -> Result<Response<ServiceInfoResponse>, Status> {
         let req = request.into_inner();
+        log::info!(
+            "Service updated: id='{}', category='{}', subcategory='{}'",
+            req.service_id.clone(),
+            req.category.clone(),
+            req.subcategory.clone()
+        );
+
         let service_id = req.service_id;
         let category = req.category;
         let subcategory = req.subcategory;
