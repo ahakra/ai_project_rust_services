@@ -117,6 +117,13 @@ impl ServiceRegistry for Registry {
         request: Request<ServiceDeleteRequest>,
     ) -> Result<Response<ServiceDeleteResponse>, Status> {
         let req = request.into_inner();
+        log::info!(
+            "Service deleted: id='{}', category='{}', subcategory='{}'",
+            req.service_id.clone(),
+            req.category.clone(),
+            req.subcategory.clone()
+        );
+
         let service_id = req.service_id;
         let category = req.category;
         let subcategory = req.subcategory; // Optional if you use subcategory filtering
